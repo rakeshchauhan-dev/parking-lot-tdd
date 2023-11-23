@@ -16,16 +16,12 @@ public class Attendant {
     }
 
     public void park(Vehicle vehicle) throws CarIsAlreadyParkedException, ParkingNotAvailableException {
-        Optional<ParkingLot> optionalParkingLot = parkingLotList
-                .stream()
-                .filter(parkingLot -> parkingLot.isParkingAvailable())
-                .findFirst();
-
-        if(optionalParkingLot.isPresent()){
-            optionalParkingLot.get().park(vehicle);
-        }else{
-            throw new ParkingNotAvailableException();
+        if (isCarAlreadyParked(vehicle)){
+            throw new CarIsAlreadyParkedException();
         }
+        FirstAvailableParkingLotStrategy firstAvailableParkingLotStrategy = new FirstAvailableParkingLotStrategy();
+        ParkingLot availableParkingLot = firstAvailableParkingLotStrategy.select(parkingLotList);
+        availableParkingLot.park(vehicle);
     }
 
     public void unPark(Vehicle vehicle) throws CarIsNotParkedException {
@@ -38,5 +34,14 @@ public class Attendant {
         }else{
             throw new CarIsNotParkedException();
         }
+    }
+
+    public boolean isCarAlreadyParked(Vehicle vehicle){
+        Optional<ParkingLot> optionalParkingLot = this.parkingLotList
+                .stream()
+                .filter(parkingLot -> parkingLot.isPark(vehicle))
+                .findFirst();
+
+        return optionalParkingLot.isPresent();
     }
 }

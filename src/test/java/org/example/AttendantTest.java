@@ -34,4 +34,29 @@ public class AttendantTest {
         attendant.park(vehicle);
         Assertions.assertTrue(true);
     }
+
+    @Test
+    void shouldUnParkCarIfCarIsPark() throws CarIsNotParkedException, ParkingNotAvailableException, CarIsAlreadyParkedException {
+        Attendant attendant = new Attendant();
+        Vehicle vehicle = new Vehicle();
+        ParkingLot parkingLot1 = new ParkingLot(0);
+        ParkingLot parkingLot2 = new ParkingLot(1);
+        attendant.assignParkingLot(parkingLot1);
+        attendant.assignParkingLot(parkingLot2);
+        attendant.park(vehicle);
+        attendant.unPark(vehicle);
+        Assertions.assertTrue(true);
+    }
+
+    @Test
+    void shouldThrowErrorIfCarIsNotParked() throws ParkingNotAvailableException, CarIsAlreadyParkedException {
+        Attendant attendant = new Attendant();
+        Vehicle vehicle = new Vehicle();
+        ParkingLot parkingLot1 = new ParkingLot(0);
+        ParkingLot parkingLot2 = new ParkingLot(1);
+        attendant.assignParkingLot(parkingLot1);
+        attendant.assignParkingLot(parkingLot2);
+        attendant.park(new Vehicle());
+        Assertions.assertThrows(CarIsNotParkedException.class, () -> {attendant.unPark(vehicle);;});
+    }
 }

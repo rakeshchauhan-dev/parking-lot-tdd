@@ -27,4 +27,16 @@ public class Attendant {
             throw new ParkingNotAvailableException();
         }
     }
+
+    public void unPark(Vehicle vehicle) throws CarIsNotParkedException {
+        Optional<ParkingLot> optionalParkingLot = parkingLotList
+                .stream()
+                .filter(parkingLot -> parkingLot.isPark(vehicle))
+                .findFirst();
+        if(optionalParkingLot.isPresent()){
+            optionalParkingLot.get().unPark(vehicle);
+        }else{
+            throw new CarIsNotParkedException();
+        }
+    }
 }

@@ -43,6 +43,10 @@ public class ParkingLot implements ParkingLotObservable {
     public boolean isParkingAvailable() {
         return (this.carParked.size() < this.capacity);
     }
+
+    public boolean isPark(Vehicle vehicle) {
+        return (this.carParked.contains(vehicle));
+    }
     @Override
     public void addObserver(ParkingLotObserver observer) {
         this.observers.add(observer);

@@ -1,17 +1,19 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
-public class ParkingLot {
+public class ParkingLot implements ParkingLotObservable {
 
     int capacity;
     HashSet<Vehicle> carParked;
-    ParkingOwner parkingOwner;
+    List<ParkingLotObserver> observers;
     public ParkingLot(int capacity) {
 
         this.capacity = capacity;
         this.carParked = new HashSet<Vehicle>();
-        this.parkingOwner = new ParkingOwner(false);
+        this.observers = new ArrayList<>();
     }
 
     public void park(Vehicle vehicle) throws ParkingNotAvailableException, CarIsAlreadyParkedException {
@@ -22,7 +24,7 @@ public class ParkingLot {
             } else {
                 this.carParked.add(vehicle);
                 if (this.carParked.size() == this.capacity){
-                    this.parkingOwner.notifyParkingOwner(true);
+                    observers.forEach(observer -> observer.notifyParkingFull());
                 }
             }
     }
@@ -33,8 +35,17 @@ public class ParkingLot {
             throw new CarIsNotParkedException();
         } else {
             if (this.carParked.size() == this.capacity - 1){
-                this.parkingOwner.notifyParkingOwner(false);
+                observers.forEach(observer -> observer.notifyParkingAvailable());
             }
         }
     }
+
+    public boolean isParkingAvailable() {
+        return (this.carParked.size() < this.capacity);
+    }
+    @Override
+    public void addObserver(ParkingLotObserver observer) {
+        this.observers.add(observer);
+    }
+
 }

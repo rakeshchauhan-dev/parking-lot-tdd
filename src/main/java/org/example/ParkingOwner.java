@@ -8,7 +8,5 @@ public class ParkingOwner {
         this.parkingIsFull = parkingIsFull;
     }
 
-    public void notifyParkingOwner(boolean parkingIsFull){
-        this.parkingIsFull = parkingIsFull;
-    }
+
 }

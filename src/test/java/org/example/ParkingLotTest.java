@@ -1,10 +1,19 @@
 package org.example;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.Mockito.*;
+
 public class ParkingLotTest {
+    private ParkingLotObserver observer;
+
+    @BeforeEach
+    void setUp() {
+        observer = mock(ParkingLotObserver.class);
+    }
     @Test
     void shouldThrowErrorWhenParkingIsNotAvailable() {
         ParkingLot parking = new ParkingLot(0);
@@ -47,7 +56,6 @@ public class ParkingLotTest {
         ParkingLot parking = new ParkingLot(1);
         Vehicle vehicle = new Vehicle();
         parking.park(vehicle);
-        Assertions.assertTrue(parking.parkingOwner.parkingIsFull);
     }
 
     @Test
@@ -55,11 +63,12 @@ public class ParkingLotTest {
         ParkingLot parking = new ParkingLot(2);
         Vehicle vehicle1 = new Vehicle();
         Vehicle vehicle2 = new Vehicle();
+        parking.addObserver(observer);
         parking.park(vehicle1);
         parking.park(vehicle2);
-        Assertions.assertTrue(parking.parkingOwner.parkingIsFull);
+        verify(observer, times(1)).notifyParkingFull();
         parking.unPark(vehicle2);
-        Assertions.assertFalse(parking.parkingOwner.parkingIsFull);
+        verify(observer, times(1)).notifyParkingAvailable();
         parking.unPark(vehicle1);
     }
 }

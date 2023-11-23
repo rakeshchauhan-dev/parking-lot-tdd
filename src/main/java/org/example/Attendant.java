@@ -6,9 +6,11 @@ import java.util.Optional;
 
 public class Attendant {
     List<ParkingLot> parkingLotList;
+    ParkingLotSelector parkingLotSelector;
 
-    public Attendant() {
+    public Attendant(ParkingLotSelector parkingLotSelector) {
         this.parkingLotList = new ArrayList<>();
+        this.parkingLotSelector = parkingLotSelector;
     }
 
     public void assignParkingLot(ParkingLot parkingLot) {
@@ -19,8 +21,7 @@ public class Attendant {
         if (isCarAlreadyParked(vehicle)){
             throw new CarIsAlreadyParkedException();
         }
-        FirstAvailableParkingLotStrategy firstAvailableParkingLotStrategy = new FirstAvailableParkingLotStrategy();
-        ParkingLot availableParkingLot = firstAvailableParkingLotStrategy.select(parkingLotList);
+        ParkingLot availableParkingLot = this.parkingLotSelector.select(parkingLotList);
         availableParkingLot.park(vehicle);
     }
 

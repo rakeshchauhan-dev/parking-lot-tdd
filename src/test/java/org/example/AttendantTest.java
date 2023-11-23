@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class AttendantTest {
     @Test
     void shouldParkCarIfAvailable() throws CarIsAlreadyParkedException, ParkingNotAvailableException {
-        Attendant attendant = new Attendant();
+        Attendant attendant = new Attendant(new FirstAvailableParkingLotStrategy());
         Vehicle vehicle = new Vehicle();
         ParkingLot parkingLot = new ParkingLot(1);
         attendant.assignParkingLot(parkingLot);
@@ -16,7 +16,7 @@ public class AttendantTest {
 
     @Test
     void shouldThrowErrorIfParkingNotAvailable() throws CarIsAlreadyParkedException, ParkingNotAvailableException {
-        Attendant attendant = new Attendant();
+        Attendant attendant = new Attendant(new FirstAvailableParkingLotStrategy());
         Vehicle vehicle = new Vehicle();
         ParkingLot parkingLot = new ParkingLot(0);
         attendant.assignParkingLot(parkingLot);
@@ -25,7 +25,7 @@ public class AttendantTest {
 
     @Test
     void shouldParkCarInSecondParkingLot() throws CarIsAlreadyParkedException, ParkingNotAvailableException {
-        Attendant attendant = new Attendant();
+        Attendant attendant = new Attendant(new FirstAvailableParkingLotStrategy());
         Vehicle vehicle = new Vehicle();
         ParkingLot parkingLot1 = new ParkingLot(0);
         ParkingLot parkingLot2 = new ParkingLot(1);
@@ -37,7 +37,7 @@ public class AttendantTest {
 
     @Test
     void shouldUnParkCarIfCarIsPark() throws CarIsNotParkedException, ParkingNotAvailableException, CarIsAlreadyParkedException {
-        Attendant attendant = new Attendant();
+        Attendant attendant = new Attendant(new FirstAvailableParkingLotStrategy());
         Vehicle vehicle = new Vehicle();
         ParkingLot parkingLot1 = new ParkingLot(0);
         ParkingLot parkingLot2 = new ParkingLot(1);
@@ -50,7 +50,7 @@ public class AttendantTest {
 
     @Test
     void shouldThrowErrorIfCarIsNotParked() throws ParkingNotAvailableException, CarIsAlreadyParkedException {
-        Attendant attendant = new Attendant();
+        Attendant attendant = new Attendant(new FirstAvailableParkingLotStrategy());
         Vehicle vehicle = new Vehicle();
         ParkingLot parkingLot1 = new ParkingLot(0);
         ParkingLot parkingLot2 = new ParkingLot(1);

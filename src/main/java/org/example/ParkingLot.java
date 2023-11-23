@@ -8,6 +8,7 @@ public class ParkingLot {
     HashSet<Vehicle> carParked;
     ParkingOwner parkingOwner;
     public ParkingLot(int capacity) {
+
         this.capacity = capacity;
         this.carParked = new HashSet<Vehicle>();
         this.parkingOwner = new ParkingOwner(false);
